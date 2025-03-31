@@ -14,7 +14,7 @@ nltk.download("punkt_tab")
 nltk.download("stopwords")
 nltk.download("wordnet")
 
-data = pd.read_csv('../data/All_new.csv')
+data = pd.read_csv('data/All_new.csv')
 data = data[500:1000]
 data['text'] = data['Top1'] + " " + data['Top2'] + " " + data['Top3'] + " " + data['Top4'] + " " + data['Top5']
 sentiment = data[['text', 'Label']]
