@@ -4,7 +4,18 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from itertools import combinations_with_replacement
+<<<<<<< HEAD
 import copy
+=======
+import matplotlib.pyplot as plt
+start = 30000
+end = start + 500
+df = pd.read_csv("ohlc_regression\ohlc.csv")
+df["avg"]=(df["high"]+df["low"])/2
+df.rename(columns={'Unnamed: 0':'date'},inplace=True)
+df = df.iloc[start:end]
+print(df.head())
+>>>>>>> 9871f12 (Price Predictor implemented using Random Forest)
 
 # Load Dataset
 data = pd.read_csv("data/All_new.csv")
