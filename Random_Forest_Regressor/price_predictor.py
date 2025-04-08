@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 # Data loading and preprocessing
 df = pd.read_csv('data/All_new.csv')
-df = df[['AMZN_Open', 'AMZN_High', 'AMZN_Low', 'AMZN_Adj Close']]  #taking the data for amazon
+df = df.loc[:, "BIDU_Open":"BIDU_Adj Close"]  #taking the data for amazon
 df.insert(0, 'Day', range(1, 1 + len(df)))  # Add "Day" column
-df['Average'] = (df['AMZN_High'] + df['AMZN_Low'])/2
+df['Average'] = (df['BIDU_High'] + df['BIDU_Low'])/2
 
 # Calculate rolling average
 Rolling_avg = []
@@ -34,12 +34,12 @@ def Standard_Scalar(data):
     data = (data - mean)/std
     return data
 
-#standardizing the rolling_avg column
-X_cleaned_Data = {'Day': df['Day'], 'Rolling_Avg': Standard_Scalar(df['Rolling_Avg'])}
+#standardizing the rolling_avg column and day column
+X_cleaned_Data = {'Day': Standard_Scalar(df['Day']), 'Rolling_Avg': Standard_Scalar(df['Rolling_Avg'])}
 X_cleaned = pd.DataFrame(X_cleaned_Data)
 
 #taking last 10 days as test using the values of previous days
-X_train, X_test, y_train, y_test = train_test_split(X_cleaned, y, test_size=10,shuffle = False)
+X_train, X_test, y_train, y_test = train_test_split(X_cleaned, y, test_size=200,shuffle = False)
 
 
 #class for decision tree regressor
