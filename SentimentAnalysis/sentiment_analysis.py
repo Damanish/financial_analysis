@@ -106,6 +106,8 @@ class DecisionTree:
     return np.array([self.predict_sample(sample, self.tree) for sample in X])
 
 def bootstrap(X,y):
+  if isinstance(X, pd.DataFrame):
+    X = X.values  
   n = X.shape[0]
   indices = np.random.choice(n, size=n, replace=True)
   return X[indices], y[indices]
@@ -125,6 +127,8 @@ class RandomForestClassifier:
       print(f"Tree {i+1} trained.")
 
   def predict(self, X):
+    if isinstance(X, pd.DataFrame):
+      X = X.values  
     tree_predictions = np.array([tree.predict(X) for tree in self.trees])
     final_predictions = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=tree_predictions)
     return np.array(final_predictions)
