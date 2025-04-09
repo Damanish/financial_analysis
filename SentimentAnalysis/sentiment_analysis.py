@@ -40,21 +40,6 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(data['cleaned'])
 X = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out()).astype(np.float32)
 y = pd.DataFrame(data['Label']).astype(np.int8).values.flatten()
 
-X_majority = X[y == 0]
-X_minority = X[y == 1]
-y_majority = y[y == 0]
-y_minority = y[y == 1]
-
-X_minority_upsampled, y_minority_upsampled = resample(
-    X_minority, y_minority,
-    replace=True,
-    n_samples=len(y_majority),
-    random_state=42
-)
-
-X_balanced = np.vstack([X_majority, X_minority_upsampled])
-y_balanced = np.hstack([y_majority, y_minority_upsampled])
-
 def gini_impurity(y):
   counts = np.bincount(y, minlength=2)
   probabilities = counts / len(y)
@@ -148,9 +133,8 @@ class RandomForestClassifier:
     predictions = self.predict(X)
     return np.mean(predictions == y)
 
-X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, stratify = y_balanced, random_state=42)
 rf = RandomForestClassifier(n_trees=200, max_depth=10)
-rf.fit(X_train, y_train)
+rf.fit(X[0:450], y[0:450])
 
-accuracy = rf.score(X_test, y_test)
+accuracy = rf.score(X[450:500], y[450:500])
 print("Accuracy:", accuracy)
