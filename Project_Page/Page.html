@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Price Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fdfdfd;
+      margin: 0;
+      padding: 0;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    nav {
+      background-color: #1e293b;
+      padding: 1rem 10%;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav ul li {
+      display: inline;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 2rem 10%;
+      border-bottom: 1px solid #eee;
+    }
+
+    h2 {
+      color: #2c3e50;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background-color: #e2e8f0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    a.repo-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #1e40af;
+      text-decoration: underline;
+    }
+  </style>
+  
+</head>
+<body>
+
+<nav>
+  <h1>Stock Price Predictor</h1>
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#dataset">Dataset</a></li>
+    <li><a href="#models">Models</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="report.pdf" target="_blank">Report</a></li>
+    <li><a href="https://github.com/Damanish/financial_analysis" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<section id="abstract">
+  <h2>Abstract</h2>
+  <p>
+    Predicting stock prices is a challenging task due to the complexity and volatility of financial markets. In this project, we propose a hybrid approach that combines technical indicators derived from historical candlestick patterns with sentiment analysis of news data to predict future stock prices. 
+  </p>
+  <p>
+    Our approach uses polynomial linear regression on a transformed price series (calculated from high/low averages and rolling means) and integrates this with sentiment classification outputs to account for real-world influences. By merging two distinct models — one for numerical prediction and one for sentiment understanding — we aim to improve prediction accuracy and market responsiveness.
+  </p>
+</section>
+
+<section id="dataset">
+  <h2>Dataset</h2>
+  <p>
+    The dataset used for this project is a CSV file named <strong>All_new.csv</strong> which includes:
+    <ul>
+      <li>Open, High, Low, Adj Close values for each day</li>
+      <li>A new calculated <code>Price = (High + Low) / 2</code></li>
+      <li><code>Rolling Average</code> column: a 10-day rolling mean of prices</li>
+    </ul>
+    This structured dataset serves as the basis for our first model's time-series forecasting, providing a clearer picture of market trends.
+  </p>
+</section>
+
+<section id="models">
+  <h2>Models Used</h2>
+  <p>
+    We experimented with several machine learning algorithms for both components of the system:
+    </p>
+    <h3>Model 1: Price Prediction</h3>
+    <ul>
+      <li>KNN Regressor</li>
+      <li>Decision Tree Regressor</li>
+      <li><strong>Polynomial Linear Regression (Best Performer)</strong></li>
+    </ul>
+
+    <h3>Model 2: Sentiment Analysis</h3>
+    <ul>
+      <li>SVM Classifier</li>
+      <li>KNN Classifier</li>
+      <li><strong>Decision Tree Classifier (Best Performer)</strong></li>
+    </ul>
+
+    <p>
+      We combined these models to create a hybrid predictor where sentiment classification adjusts or influences the regression output.
+    </p>
+</section>
+
+<section id="results">
+  <h2>Results</h2>
+  <p>
+    The final merged model outperformed standalone approaches in both stability and accuracy. Key results:
+    <ul>
+      <li>Polynomial regression accurately captured price trends over time</li>
+      <li>Sentiment analysis flagged negative news that correlated with dips</li>
+      <li>Hybrid predictions showed improved Mean Squared Error (MSE) scores</li>
+    </ul>
+    Plots and evaluation metrics will be included here.
+  </p>
+</section>
+
+<footer>
+  © 2025 | Stock Price Predictor Team | GitHub: 
+  <a href="https://github.com/Damanish/financial_analysis" target="_blank">Damanish/financial_analysis</a>
+</footer>
+
+</body>
+</html>
