@@ -5,9 +5,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from itertools import combinations_with_replacement
 import copy
-
+import os
 # Load Dataset
-data = pd.read_csv("data/All_new.csv")
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(current_dir, '..', 'data', 'All_new.csv')
+
+data = pd.read_csv(csv_path)
 data_Baidu = data.loc[:, "BIDU_Open":"BIDU_Adj Close"]
 data_Baidu["avg"] = (data_Baidu["BIDU_High"] + data_Baidu["BIDU_Low"]) / 2
 

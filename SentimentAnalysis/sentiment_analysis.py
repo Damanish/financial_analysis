@@ -9,12 +9,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils import resample
 from collections import Counter
 from sklearn.model_selection import train_test_split
+import os
 #enabling required nltk datasets
 nltk.download("punkt_tab")
 nltk.download("stopwords")
 nltk.download("wordnet")
 
-data = pd.read_csv('data/All_new.csv')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(current_dir, '..', 'data', 'All_new.csv')
+
+data = pd.read_csv(csv_path)
 data = data[500:1000]
 data['text'] = data['Top1'] + " " + data['Top2'] + " " + data['Top3'] + " " + data['Top4'] + " " + data['Top5']
 sentiment = data[['text', 'Label']]
@@ -39,21 +43,6 @@ tfidf_vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 1), min_df
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['cleaned'])
 X = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out()).astype(np.float32)
 y = pd.DataFrame(data['Label']).astype(np.int8).values.flatten()
-
-X_majority = X[y == 0]
-X_minority = X[y == 1]
-y_majority = y[y == 0]
-y_minority = y[y == 1]
-
-X_minority_upsampled, y_minority_upsampled = resample(
-    X_minority, y_minority,
-    replace=True,
-    n_samples=len(y_majority),
-    random_state=42
-)
-
-X_balanced = np.vstack([X_majority, X_minority_upsampled])
-y_balanced = np.hstack([y_majority, y_minority_upsampled])
 
 def gini_impurity(y):
   counts = np.bincount(y, minlength=2)
@@ -121,6 +110,8 @@ class DecisionTree:
     return np.array([self.predict_sample(sample, self.tree) for sample in X])
 
 def bootstrap(X,y):
+  if isinstance(X, pd.DataFrame):
+    X = X.values  
   n = X.shape[0]
   indices = np.random.choice(n, size=n, replace=True)
   return X[indices], y[indices]
@@ -140,6 +131,8 @@ class RandomForestClassifier:
       print(f"Tree {i+1} trained.")
 
   def predict(self, X):
+    if isinstance(X, pd.DataFrame):
+      X = X.values  
     tree_predictions = np.array([tree.predict(X) for tree in self.trees])
     final_predictions = np.apply_along_axis(lambda x: np.bincount(x).argmax(), axis=0, arr=tree_predictions)
     return np.array(final_predictions)
@@ -148,9 +141,8 @@ class RandomForestClassifier:
     predictions = self.predict(X)
     return np.mean(predictions == y)
 
-X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, stratify = y_balanced, random_state=42)
 rf = RandomForestClassifier(n_trees=200, max_depth=10)
-rf.fit(X_train, y_train)
+rf.fit(X[0:450], y[0:450])
 
-accuracy = rf.score(X_test, y_test)
+accuracy = rf.score(X[450:500], y[450:500])
 print("Accuracy:", accuracy)
