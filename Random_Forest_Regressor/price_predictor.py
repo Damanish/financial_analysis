@@ -175,8 +175,30 @@ def mean_squared_error(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)  # Convert to NumPy arrays
     return np.mean((y_true - y_pred) ** 2)  # Compute MSE
 
-# Train the model
-reg = RandomForestRegressor(n_trees=50, max_depth=10, min_samples_split=2)
+#to tune hyperparameters
+
+# best_estimators = None
+# best_mse = 10000000
+# best_max_depth = None
+# for i in [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]:
+#     for j in [5, 10, 15, 20]:
+#         print("loop: ", i)
+#         # Train the model
+#         reg = RandomForestRegressor(n_trees=i, max_depth=10, min_samples_split=2)
+#         reg.fit(X_train, y_train)
+
+#         # Evaluate
+#         y_train_pred = reg.predict(X_train)
+#         y_test_pred = reg.predict(X_test)
+#         mse_value = mean_squared_error(y_test, y_test_pred)
+#         print("Mean Squared Error:", mse_value)
+#         if(mse_value < best_mse):
+#             best_mse = mse_value
+#             best_estimators = i
+#             best_max_depth = j
+
+#Train the model
+reg = RandomForestRegressor(n_trees=5, max_depth=10, min_samples_split=2)
 reg.fit(X_train, y_train)
 
 # Evaluate
