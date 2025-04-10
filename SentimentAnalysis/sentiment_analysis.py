@@ -9,12 +9,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils import resample
 from collections import Counter
 from sklearn.model_selection import train_test_split
+import os
 #enabling required nltk datasets
 nltk.download("punkt_tab")
 nltk.download("stopwords")
 nltk.download("wordnet")
 
-data = pd.read_csv('data/All_new.csv')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(current_dir, '..', 'data', 'All_new.csv')
+
+data = pd.read_csv(csv_path)
 data = data[500:1000]
 data['text'] = data['Top1'] + " " + data['Top2'] + " " + data['Top3'] + " " + data['Top4'] + " " + data['Top5']
 sentiment = data[['text', 'Label']]
