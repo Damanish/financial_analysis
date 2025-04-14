@@ -19,7 +19,7 @@ This project explores **stock price prediction** using both numerical stock data
 - **RMSE:** 4.94
 - Significantly outperformed KNN and Random Forest Regressors.
 
-### 🛠️ Techniques Used:
+### Techniques Used:
 - Feature Engineering: 10-day rolling average, polynomial terms.
 - Custom implementation of gradient descent.
 - Visualizations: Training fit, prediction error, full dataset view, learning curve.
