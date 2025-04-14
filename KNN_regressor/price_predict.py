@@ -7,7 +7,7 @@ from itertools import combinations_with_replacement
 
 # Data loading and preprocessing
 df = pd.read_csv('data/All_new.csv')
-df = df.loc[:, "BIDU_Open":"BIDU_Adj Close"]  #taking the data for amazon
+df = df.loc[:, "BIDU_Open":"BIDU_Adj Close"]  #taking the data for BIDU
 df.insert(0, 'Day', range(1, 1 + len(df)))  # Add "Day" column
 df['Average'] = (df['BIDU_High'] + df['BIDU_Low'])/2
 
@@ -39,7 +39,7 @@ def Standard_Scalar(data):
 X_cleaned_Data = {'Day': Standard_Scalar(df['Day']), 'Rolling_Avg': Standard_Scalar(df['Rolling_Avg'])}
 X_cleaned = pd.DataFrame(X_cleaned_Data)
 
-#taking last 10 days as test using the values of previous days
+#taking last 200 days as test using the values of previous days
 X_train, X_test, y_train, y_test = train_test_split(X_cleaned, y, test_size=200,shuffle = False)
 
 class KNNRegressor:
@@ -79,8 +79,21 @@ def mean_squared_error(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)  # Convert to NumPy arrays
     return np.mean((y_true - y_pred) ** 2)  # Compute MSE
 
+# #Tuning the value of k
+# i = 1
+# while i<100:
+#     reg = KNNRegressor(k=i)
+#     reg.fit(X_train, y_train)
+
+#     # Evaluate
+#     y_train_pred = reg.predict(X_train)
+#     y_test_pred = reg.predict(X_test)
+#     mse_value = mean_squared_error(y_test, y_test_pred)
+#     print("Mean Squared Error for ",i,":", mse_value)
+#     i += 2
+
 # Train the model
-reg = KNNRegressor(k=3)
+reg = KNNRegressor(k=53)
 reg.fit(X_train, y_train)
 
 # Evaluate
